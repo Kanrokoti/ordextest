@@ -284,11 +284,11 @@ Kuma3ary.prototype.expand=function(Y){
   var kw = Kuma3ary.kw;
   var X  = this;
   var newk = function(X_1,X_2){return new Kuma3ary(",",[X_1,X_2]);};
-  var seek = function(X,X_1,X_mb'){
+  var seek = function(X,X_1,X_mb2){
                        var m = X.a.length;
                        var i;  var k = -1;
                        for(i = 0; i < m-1; i++){
-                         if(eq(X.a[i].a[0],X_1) && eq(X.a[i].a[1],X_mb')){
+                         if(eq(X.a[i].a[0],X_1) && eq(X.a[i].a[1],X_mb2)){
                            k = i;
                          }
                        }
@@ -371,8 +371,8 @@ Kuma3ary.prototype.expand=function(Y){
                       if(dom(X_m.a[1]).isone()){
                         var h=Y.toint();
                         if(1<=h && h!=-1){
-                          var X_mb' = X_m.a[1].expand(k0);
-                          var k = seek(X,X_m.a[0],X_mb');
+                          var X_mb2 = X_m.a[1].expand(k0);
+                          var k = seek(X,X_m.a[0],X_mb2);
                           var j = h;
                           return new Kuma3ary("+",[detg(X,k),detG(X,k,j)]);
                         }else{

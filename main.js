@@ -59,39 +59,33 @@ var redraw=function(){
 var mainsugar = function(str){
   /* programmer memo: Define conversion from the object to the suger syntax here. */
   switch(str){
-    case "(0)": case "(0,0)": case "(0,0,0)":
+    case "(0)": case "(0,0)":
     if(!sugar1check.checked)break;
     return "1";
     
-    case "(1)": case "(0,1)": case "(0,0,1)":
-    case "(0,0,0)": case "(0,(0,0,0))": case "(0,0,(0,0,0))":
+    case "(1)": case "(0,1)":
+    case "((0,0))": case "(0,(0,0))":
     if(!sugarwcheck.checked)break;
     return "w";
     
-    case "(1,0)": case "(0,1,0)":
-    case "((0,0,0),0)": case "(0,(0,0,0),0)":
+    case "(1,0)": case "((0,0),0)":
     if(!sugarWcheck.checked)break;
     return "W";
     
-    case "(0,W)": case "(0,0,W)":
-    case "(0,(0,1,0))": case "(0,0,(0,1,0))":
-    case "(0,(0,(0,0,0),0))": case "(0,0,(0,(0,0,0),0))":
+    case "(0,W)": case "(0,(1,0))":
+    case "(0,((0,0),0))":
     if(!sugarecheck.checked)break;
-    return "e";
+    return "G";
     
-    case "(0,(0,1,W))": case "(0,0,(0,1,W))":
-    case "(0,(0,(0,0,0),W))": case "(0,0,(0,(0,0,0),W))":
-    case "(0,(0,1,(0,1,0)))": case "(0,0,(0,1,(0,1,0)))":
-    case "(0,(0,(0,0,0),(0,(0,0,0),0)))": case "(0,0,(0,(0,0,0),(0,(0,0,0),0)))":
+    case "(0,w+w)": case "(0,w+(0,1))": case "(0,w+(0,(0,0)))":
+    case "(0,(0,1)+w)": case "(0,(0,1)+(0,1))": case "(0,(0,1)+(0,(0,0)))":
+    case "(0,(0,(0,0))+w)": case "(0,(0,(0,0))+(0,1))": case "(0,(0,(0,0))+(0,(0,0)))":
     if(!sugarzcheck.checked)break;
     return "z";
     
-    case "(0,(0,1,(0,1,W)))": case "(0,0,(0,1,(0,1,W)))":
-    case "(0,(0,1,(0,1,(0,1,0))))": case "(0,0,(0,1,(0,1,(0,1,0))))":
-    case "(0,(0,(0,0,0),(0,(0,0,0),W)))": case "(0,0,(0,(0,0,0),(0,(0,0,0),W)))":
-    case "(0,(0,(0,0,0),(0,(0,0,0),(0,(0,0,0),0))))": case "(0,0,(0,(0,0,0),(0,(0,0,0),(0,(0,0,0),0))))":
+    case "(0,w)": case "(0,(0,1))": case "(0,(0,(0,0)))":
     if(!sugarGcheck.checked)break;
-    return "G";
+    return "e";
   }
 
   if(sugarNcheck.checked){
@@ -315,6 +309,6 @@ k0=new Kuma3ary("0");
 k1=new Kuma3ary("1");
 kw=new Kuma3ary("w");
 kW=new Kuma3ary("W");
-ke=new Kuma3ary("w");
+ke=new Kuma3ary("(0,w)");
 kz=new Kuma3ary("z");
 
