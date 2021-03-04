@@ -1,5 +1,5 @@
-/* @fn new Kuma3ary(t,a)
- * @brief initialize a new object for kuma kuma 3-ary Psi by t and a.
+/* @fn new Wormbasedpsi(t,a)
+ * @brief initialize a new object for worm based psi by t and a.
  * @param t = {"0", "1", "2", ... , "9", "w","+",","} = initialize type
  *  When t = "0" -- "9", the object is initialized as the natural number.
  *  When t = "w"       , the object is initialized as the first transfinite ordinal.
@@ -16,27 +16,28 @@ Kuma3ary = function(t,a){
     return;
     case "1":
       this.t=",";
-      this.a=[new Kuma3ary("0"), new Kuma3ary("0"), new Kuma3ary("0")];
+      this.a=[new Kuma3ary("0"), new Kuma3ary("0")];
     return;
     case "w":
       this.t=",";
-      this.a=[new Kuma3ary("0"), new Kuma3ary("0"), new Kuma3ary("1")];
+      this.a=[new Kuma3ary("0"), new Kuma3ary("1")];
     return;
     case "W":
       this.t=",";
-      this.a=[new Kuma3ary("0"), new Kuma3ary("1"), new Kuma3ary("0")];
+      this.a=[new Kuma3ary("1"), new Kuma3ary("0")];
     return;
     case "e":
-      this.t=",";
-      this.a=[new Kuma3ary("0"), new Kuma3ary("0"), new Kuma3ary("W")];
+      var k=Kuma3ary.parse("(0,w)");
+      this.t=k.t;
+      this.a=k.a;
     return;
     case "z":
-      var k=Kuma3ary.parse("(0,0,(0,1,W))");
+      var k=Kuma3ary.parse("(0,w+w)");
       this.t=k.t;
       this.a=k.a;
     return;
     case "G":
-      var k=Kuma3ary.parse("(0,0,(0,1,(0,1,W)))");
+      var k=Kuma3ary.parse("(0,W)");
       this.t=k.t;
       this.a=k.a;
     return;
@@ -62,36 +63,36 @@ Kuma3ary = function(t,a){
   }
 }
 
-/* @fn Kuma3ary.toSugar
+/* @fn Wormbasedpsi.toSugar
  * @brief Callback for sugar for toString(sugar). 
- * @detail When you use kuma.toString(), if you add the function for the parameter of toString() like kuma.toString(Kuma3ary.toSugar), toString will become to use the sugar syntax defined in the function. 
+ * @detail When you use kuma.toString(), if you add the function for the parameter of toString() like kuma.toString(Wormbasedpsi.toSugar), toString will become to use the sugar syntax defined in the function. 
  * @param str = input string from toString().
  * @returns str = modified string which is finally output by toString(). */
 Kuma3ary.toSugar = function(str){
   /* programmer memo: Define conversion from the object to the suger syntax here. */
   switch(str){
-    case "(0)": case "(0,0)": case "(0,0,0)":
+    case "(0)": case "(0,0)":
     return "1";
     
-    case "(1)": case "(0,0,1)": case "(0,0,1)":
+    case "(1)": case "(0,1)":
     return "w";
     
-    case "(1,0)": case "(0,1,0)":
+    case "(1,0)":
     return "W";
     
-    case "(0,W)": case "(0,0,W)":
+    case "(0,w)":
     return "e";
     
-    case "(0,(0,1,W))": case "(0,0,(0,1,W))":
+    case "(0,w+w)":
     return "z";
     
-    case "(0,(0,1,(0,1,W)))": case "(0,0,(0,1,(0,1,W)))":
+    case "(0,W)":
     return "G";
   }
   return str;
 }
 
-/* programmer memo: Please put the code as following to make the type Kuma3ary the extension of the type Ordinal. */
+/* programmer memo: Please put the code as following to make the type Wormbasedpsi the extension of the type Ordinal. */
 /* ------------------0---------------------------------- begin */
 Kuma3ary.prototype = Object.create(Ordinal.prototype);
 Object.defineProperty(Kuma3ary.prototype, 'constructor', 
@@ -161,261 +162,233 @@ Kuma3ary.kW=new Kuma3ary("W");
 
 /** @fn lt(x,y)
   * @brief compare x and y and returns ordering of them.  
-  * @param x = Kuma3ary ordinal notation.
-  * @param y = Kuma3ary ordinal notation.
+  * @param x = Wormbasedpsi ordinal notation.
+  * @param y = Wormbasedpsi ordinal notation.
   * @returns = {true:x<y, false:x>=y}.
   * */
 /*-----------------------------------------------------------------------------
-Kanrokoti, "Ç≠Ç‹Ç≠Ç‹3ïœêîÉ’", ãêëÂêîå§ãÜ Wiki, 2021-01-03T22:42:55.
-  revision 33606, https://googology.wikia.org/ja/wiki/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%83%96%E3%83%AD%E3%82%B0:Kanrokoti/%E3%81%8F%E3%81%BE%E3%81%8F%E3%81%BE3%E5%A4%89%E6%95%B0%CF%88?oldid=33606
+Kanrokoti, "Ëô´„Éô„Éº„ÇπœàÈñ¢Êï∞", Â∑®Â§ßÊï∞Á†îÁ©∂ Wiki, 2021-03-04T01:17:40.
+  revision 34803, https://googology.wikia.org/ja/wiki/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%83%96%E3%83%AD%E3%82%B0:Kanrokoti/%E8%99%AB%E3%83%99%E3%83%BC%E3%82%B9%CF%88%E9%96%A2%E6%95%B0?oldid=34803
   ---------------------------------------------------------------------------*/
-/* èáèò Ç±Ç±Ç≈ÇÕÅAï\ãLä‘ÇÃëÂè¨ä÷åWÇíËã`Ç∑ÇÈÅB */
-/* X,YÅ∏TÇ…ëŒÇµÅA2çÄä÷åWX<YÇà»â∫ÇÃÇÊÇ§Ç…çƒãAìIÇ…íËÇﬂÇÈ: */
+/* È†ÜÂ∫è „Åì„Åì„Åß„ÅØ„ÄÅË°®Ë®ò„Å´„Åä„Åë„ÇãÂ§ßÂ∞èÈñ¢‰øÇ„ÇíËæûÊõ∏ÂºèÈ†ÜÂ∫è„ÅßÂÆöÁæ©„Åô„Çã„ÄÇ */
+/* T‰∏ä„ÅÆ2È†ÖÈñ¢‰øÇs‚â¶t„Å®s<t„Çí‰ª•‰∏ã„ÅÆ„Çà„ÅÜ„Å´ÂêåÊôÇ„Å´ÂÜçÂ∏∞ÁöÑ„Å´ÂÆö„ÇÅ„Çã: */
+/* s‚â¶t„ÅØ‰Ωø„Çè„Å™„ÅÑ„ÅÆ„Åßs<t„ÅÆ„Åø„Çí„Éó„É≠„Ç∞„É©„É†„Åó„Åæ„Åô„ÄÇ‰ª•Èôçs„ÇíX„ÄÅt„ÇíY„Å®„Åó„Å¶Êâ±„ÅÑ„Åæ„Åô„ÄÇ */
+/* „ÇÅ„Çì„Å©„Åè„Åï„ÅÑ„ÅÆ„Åß„Åè„Åæ3„ÅÆ„Çí2Â§âÊï∞„Å´Áõ¥„Åó„Å¶ÊµÅÁî®„Åó„Åæ„Åô„ÄÇÂÆöÁæ©„Å®„Åó„Å¶„ÅØÂêåÂÄ§„ÅÆ„ÅØ„Åö„Å™„ÅÆ„Åß„ÄÇ */
 Kuma3ary.lt=function(X,Y){
-  if(!X instanceof Kuma3ary) throw new Error("X is not Kuma3ary object.");
-  if(!Y instanceof Kuma3ary) throw new Error("Y is not Kuma3ary object.");
+  if(!X instanceof Kuma3ary) throw new Error("X is not Wormbasedpsi object.");
+  if(!Y instanceof Kuma3ary) throw new Error("Y is not Wormbasedpsi object.");
   var eq = Kuma3ary.eq;
   var lt = Kuma3ary.lt;
-  /* 1.         Ç‡ÇµX=0Ç»ÇÁÇŒÅAX<YÇÕ  YÅÇ0Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 1.         „ÇÇ„ÅóX=0„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ  Y‚â†0„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 1       */ if(X.iszero()) return !Y.iszero();
-  /* 2.         Ç±Ç±Ç≈X=É’_{X_1}(X_2,X_3)ÇñûÇΩÇ∑X_1,X_2,X_3Å∏TÇ™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 2.         „Åì„Åì„ÅßX=œà_{X_1}(X_2)„ÇíÊ∫Ä„Åü„Åô(X_1,X_2)‚ààT^2„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 2       */ if(X.isPT  ()){
-  /*         */   var X_1 = X.a[0]; var X_2 = X.a[1]; var X_3 = X.a[2];
-  /* 2-1.         Ç‡ÇµY=0Ç»ÇÁÇŒÅAX<YÇÕ  ãUÇ≈Ç†ÇÈÅB */
+  /*         */   var X_1 = X.a[0]; var X_2 = X.a[1];
+  /* 2-1.         „ÇÇ„ÅóY=0„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ  ÂÅΩ„Åß„ÅÇ„Çã„ÄÇ */
   /* 2-1     */   if(Y.iszero()) return false;
-  /* 2-2.         Ç±Ç±Ç≈Y=É’_{Y_1}(Y_2,Y_3)ÇñûÇΩÇ∑Y_1,Y_2,Y_3Å∏TÇ™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 2-2.         „Åì„Åì„ÅßY=œà_{Y_1}(Y_2)„ÇíÊ∫Ä„Åü„Åô(Y_1,Y_2)‚ààT^2„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 2-2     */   if(Y.isPT()){
-  /*         */     var Y_1 = Y.a[0]; var Y_2 = Y.a[1]; var Y_3 = Y.a[2];
-  /* 2-2-1.         Ç‡Çµ   X_1= Y_1 Ç©Ç¬    X_2=Y_2 Ç»ÇÁÇŒÅAX<YÇÕ     X_3<Y_3Ç∆ìØílÇ≈Ç†ÇÈÅB*/
-  /* 2-2-1   */     if( eq(X_1, Y_1) &&  eq(X_2,Y_2))       return lt(X_3,Y_3);
-  /* 2-2-2.         Ç‡Çµ   X_1= Y_1 Ç©Ç¬    X_2ÅÇY_2Ç»ÇÁÇŒÅAX<YÇÕ     X_2<Y_2Ç∆ìØílÇ≈Ç†ÇÈÅB*/
+  /*         */     var Y_1 = Y.a[0]; var Y_2 = Y.a[1];
+  /* 2-2-2.         „ÇÇ„Åó   X_1= Y_1 „Åã„Å§    X_2‚â†Y_2„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ     X_2<Y_2„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ*/
   /* 2-2-2   */     if( eq(X_1, Y_1) && !eq(X_2,Y_2))       return lt(X_2,Y_2);
-  /* 2-2-3.         Ç‡Çµ   X_1ÅÇY_1Ç»ÇÁÇŒÅA                 X<YÇÕ     X_1<Y_1Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 2-2-3.         „ÇÇ„Åó   X_1‚â†Y_1„Å™„Çâ„Å∞„ÄÅ                 X<Y„ÅØ     X_1<Y_1„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 2-2-3   */     if(!eq(X_1, Y_1)                )       return lt(X_1,Y_1);
   /*         */   }
-  /* 2-3.         Ç‡ÇµY=Y_1+...+Y_{m'}ÇñûÇΩÇ∑Y_1,...,Y_{m'}Å∏PT (2ÅÖm'<Åá)Ç™ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA */
+  /* 2-3.         „ÇÇ„ÅóY=Y_1+...+Y_{m'}„ÇíÊ∫Ä„Åü„Åôm'‚àà(N\{0,1})‚àß(Y_1,...,Y_{m'})‚ààPT^{m'}„ÅåÂ≠òÂú®„Åô„Çã„Å™„Çâ„Å∞„ÄÅ */
   /* 2-3     */   if(Y.isadd()){
   /*         */     var Y_1 = Y.a[0]; var Y_2 = Y.a[1]; var Y_3 = Y.a[2];
-  /* ??           X<YÇÕ     X=Y_1  Ç‹ÇΩÇÕ X<Y_1Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* ??           X<Y„ÅØ     X=Y_1  „Åæ„Åü„ÅØ X<Y_1„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /*         */     return eq(X,Y_1) ||  lt(X,Y_1);
   /*         */   }
   /*         */ }
-  /* 3.         Ç±Ç±Ç≈X=X_1+...+X_mÇñûÇΩÇ∑X_1,...,X_mÅ∏PT (2ÅÖm<Åá)Ç™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 3.         „Åì„Åì„ÅßX=X_1+...+X_m„ÇíÊ∫Ä„Åü„Åôm‚àà(N\{0,1})‚àß(X_1,...,X_m)‚ààPT^m„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 3       */ if(X.isadd()){
   /*         */   var X_1 = X.a[0]; var X_2 = X.a[1]; var X_3 = X.a[2]; var Xm = X.a.length;
-  /* 3-1.         Ç‡ÇµY=0Ç»ÇÁÇŒÅAX<YÇÕ  ãUÇ≈Ç†ÇÈÅB */
+  /* 3-1.         „ÇÇ„ÅóY=0„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ  ÂÅΩ„Åß„ÅÇ„Çã„ÄÇ */
   /* 3-1     */   if(Y.iszero()) return false; 
-  /* 3-2.         Ç‡ÇµY=É’_{Y_1}(Y_2,Y_3)ÇñûÇΩÇ∑Y_1,Y_2,Y_3Å∏TÇ™ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA
-                                 X<YÇÕ     X_1<Y Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 3-2.         „ÇÇ„ÅóY=œà_{Y_1}(Y_2)„ÇíÊ∫Ä„Åü„Åô(Y_1,Y_2)‚ààT^2„ÅåÂ≠òÂú®„Åô„Çã„Å™„Çâ„Å∞„ÄÅ
+                                 X<Y„ÅØ     X_1<Y „Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 3-2     */   if(Y.isPT  ()) return lt(X_1,Y); 
-  /* 3-3.         Ç±Ç±Ç≈Y=Y_1+...+Y_{m'}ÇñûÇΩÇ∑Y_1,...,Y_{m'}Å∏PT (2ÅÖm'<Åá)Ç™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 3-3.         „Åì„Åì„ÅßY=Y_1+...+Y_{m'}„ÇíÊ∫Ä„Åü„Åôm'‚àà(N\{0,1})‚àß(Y_1,...,Y_{m'})‚ààPT^{m'}„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 3-3     */   if(Y.isadd ()){ 
   /*         */     var Y_1 = Y.a[0]; var Y_2 = Y.a[1]; var Y_3 = X.a[2]; var Ym = Y.a.length;
   /*         */     var X_2Xm = X.slice(1); /* X_2+X_3+...+Xm */
   /*         */     var Y_2Ym = Y.slice(1); /* Y_2+Y_3+...+Ym */
-  /* 3-3-1.         Ç±Ç±Ç≈X_1=Y_1Ç∆Ç∑ÇÈÅB */
+  /* 3-3-1.         „Åì„Åì„ÅßX_1=Y_1„Å®„Åô„Çã„ÄÇ */
   /* 3-3-1   */     if(eq(X_1,Y_1)){
-  /* 3-3-1-1.         Ç‡Çµm= 2Ç©Ç¬ m'=2Ç»ÇÁÇŒÅAX<YÇÕ   X_2         < Y_2Ç∆ìØílÇ≈Ç†ÇÈÅB            */
+  /* 3-3-1-1.         „ÇÇ„Åóm= 2„Åã„Å§ m'=2„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ   X_2         < Y_2„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ            */
   /* 3-3-1-1 */       if(Xm==2 && Ym==2)     return lt(X_2         , Y_2  );
-  /* 3-3-1-2.         Ç‡Çµm= 2Ç©Ç¬ m'>2Ç»ÇÁÇŒÅAX<YÇÕ   X_2         < Y_2+...+Y_{m'}Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 3-3-1-2.         „ÇÇ„Åóm= 2„Åã„Å§ m'>2„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ   X_2         < Y_2+...+Y_{m'}„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 3-3-1-2 */       if(Xm==2 && Ym> 2)     return lt(X_2         , Y_2Ym);
-  /* 3-3-1-3.         Ç‡Çµm> 2Ç©Ç¬ m'=2Ç»ÇÁÇŒÅAX<YÇÕ   X_2+...+X_m < Y_2Ç∆ìØílÇ≈Ç†ÇÈÅB            */
+  /* 3-3-1-3.         „ÇÇ„Åóm> 2„Åã„Å§ m'=2„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ   X_2+...+X_m < Y_2„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ            */
   /* 3-3-1-3 */       if(Xm> 2 && Ym==2)     return lt(X_2Xm       , Y_2  );
-  /* 3-3-1-4.         Ç‡Çµm> 2Ç©Ç¬ m'>2Ç»ÇÁÇŒÅAX<YÇÕ   X_2+...+X_m < Y_2+...+Y_{m'}Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 3-3-1-4.         „ÇÇ„Åóm> 2„Åã„Å§ m'>2„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ   X_2+...+X_m < Y_2+...+Y_{m'}„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 3-3-1-4 */       if(Xm> 2 && Ym> 2)     return lt(X_2Xm       , Y_2Ym);
   /*         */     }
-  /* 3-3-2.         Ç‡Çµ   X_1ÅÇY_1Ç»ÇÁÇŒÅAX<YÇÕ   X_1<Y_1Ç∆ìØílÇ≈Ç†ÇÈÅB */
+  /* 3-3-2.         „ÇÇ„Åó   X_1‚â†Y_1„Å™„Çâ„Å∞„ÄÅX<Y„ÅØ   X_1<Y_1„Å®ÂêåÂÄ§„Åß„ÅÇ„Çã„ÄÇ */
   /* 3-3-2   */     if(!eq(X_1 ,Y_1))    return lt(X_1,Y_1);
   /*         */   }
   /*         */ }
 }
 
-/* ã§èIêî */
-/* Ç±Ç±Ç≈ÇÕÅAã§èIêîÇ∆Ç¢Ç§äTîOÇíËã`Ç∑ÇÈÅB */
+/* ÂÖ±ÁµÇÊï∞ */
+/* „Åì„Åì„Åß„ÅØ„ÄÅË°®Ë®ò„Å´„Åä„Åë„ÇãÂÖ±ÁµÇÊï∞„ÇíÂÆöÁæ©„Åô„Çã„ÄÇ */
+/* „ÇÅ„Çì„Å©„Åè„Åï„ÅÑ„ÅÆ„Åß„Åè„Åæ3„ÅÆ„Çí2Â§âÊï∞„Å´Áõ¥„Åó„Å¶ÊµÅÁî®„Åó„Åæ„Åô„ÄÇÂÆöÁæ©„Å®„Åó„Å¶„ÅØÂêåÂÄ§„ÅÆ„ÅØ„Åö„Å™„ÅÆ„Åß„ÄÇ */
 Kuma3ary.prototype.dom=function(){
   var dom = function(A){return A.dom();};
   var lt = Kuma3ary.lt;
   var kw = Kuma3ary.kw;
   var k0 = Kuma3ary.k0;
   var X  = this;
-  /* 1.      Ç‡Çµ  X=0Ç»ÇÁÇŒÅAdom(X) = 0Ç≈Ç†ÇÈÅB */
+  /* 1.      „ÇÇ„Åó  X=0„Å™„Çâ„Å∞„ÄÅdom(X) = 0„Åß„ÅÇ„Çã„ÄÇ */
   /* 1       */ if(X.iszero()) return k0;
-  /* 2.         Ç±Ç±Ç≈X=É’_{X_1}(X_2,X_3)ÇñûÇΩÇ∑X_1,X_2,X_3Å∏TÇ™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 2.         „Åì„Åì„ÅßX=œà_{X_1}(X_2)„ÇíÊ∫Ä„Åü„Åô(X_1,X_2)‚ààT^2„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 2       */ if(X.isPT  ()){
-  /*         */   var X_1 = X.a[0]; var X_2 = X.a[1]; var X_3 = X.a[2];
-  /* 2-1.         Ç±Ç±Ç≈dom(X_3)=0Ç∆Ç∑ÇÈÅB */
-  /* 2-1     */   if(   dom(X_3).iszero()){
-  /* 2-1-1.        Ç±Ç±Ç≈dom(X_2)=0Ç∆Ç∑ÇÈÅB */
-  /* 2-1-1   */     if(  dom(X_2).iszero()){
-  /* 2-1-1-1.         Ç‡Çµdom(X_1)=0    Ç‹ÇΩÇÕ dom(X_1)=$1Ç»ÇÁÇŒÅAdom(X)=XÇ≈Ç†ÇÈÅB */
-  /* 2-1-1-1 */       if( dom(X_1).iszero() || dom(X_1).isone())  return X ;
-  /* 2-1-1-2.         Ç‡Çµdom(X_1)ÅÇ0        ,          $1Ç»ÇÁÇŒÅAdom(X)=dom(X_1)Ç≈Ç†ÇÈÅB */
-  /* 2-1-1-2 */       if(!dom(X_1).iszero() &&!dom(X_1).isone())  return dom(X_1);
-                    }
-  /* 2-1-2.         Ç‡Çµdom(X_2)=$1Ç»ÇÁÇŒÅAdom(X)=XÇ≈Ç†ÇÈÅB */
-                    if( dom(X_2).isone()) return  X;
-  /* 2-1-3.         Ç±Ç±Ç≈dom(X_2)ÅÇ0       ,            $1Ç∆Ç∑ÇÈÅB */
-  /* 2-1-3   */     if(  !dom(X_2).iszero() && !dom(X_2).isone()){
-  /* 2-1-3-1.         Ç‡Çµ  dom(X_2)<XÇ»ÇÁÇŒÅAdom(X)=dom(X_2)Ç≈Ç†ÇÈÅB */
-  /* 2-1-3-1 */       if(lt(dom(X_2),X))      return dom(X_2);
-  /* 2-1-3-2.         ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅA      dom(X)=$É÷Ç≈Ç†ÇÈÅB */
-  /* 2-1-3-2 */       else                    return kw;
-  /*         */     }
-  /*         */   }
-  /* 2-2.         Ç‡Çµdom(X_3)=$1   Ç‹ÇΩÇÕdom(X_3)=$É÷Ç»ÇÁÇŒÅAdom(X)=$É÷Ç≈Ç†ÇÈÅB */
-  /* 2-2     */   if( dom(X_3).isone() || dom(X_3).isw())     return kw;
-  /* 2-3.             dom(X_3)ÅÇ0       ,            $1      ,            $É÷Ç∆Ç∑ÇÈÅB */
-  /* 2-3     */   if(!dom(X_3).iszero() && !dom(X_3).isone() && !dom(X_3).isw()){
-  /* 2-3-1.         Ç‡Çµ  dom(X_3)<XÇ»ÇÁÇŒÅAdom(X)=dom(X_3)Ç≈Ç†ÇÈÅB */
-  /* 2-3-1   */     if(lt(dom(X_3),X))return       dom(X_3);
-  /* 2-3-2.         ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅAdom(X)=$É÷Ç≈Ç†ÇÈÅB */
+  /*         */   var X_1 = X.a[0]; var X_2 = X.a[1];
+  /* 2-1.         „Åì„Åì„Åßdom(X_2)=0„Å®„Åô„Çã„ÄÇ */
+  /* 2-1     */   if(   dom(X_2).iszero()){
+  /* 2-1-1.         „ÇÇ„Åódom(X_1)=0    „Åæ„Åü„ÅØ dom(X_1)=$1„Å™„Çâ„Å∞„ÄÅdom(X)=X„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-1-1   */     if( dom(X_1).iszero() || dom(X_1).isone())  return X ;
+  /* 2-1-2.         „ÇÇ„Åódom(X_1)‚â†0        ,          $1„Å™„Çâ„Å∞„ÄÅdom(X)=dom(X_1)„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-1-2   */     if(!dom(X_1).iszero() &&!dom(X_1).isone())  return dom(X_1);
+                  }
+  /* 2-2.         „ÇÇ„Åódom(X_2)=$1   „Åæ„Åü„ÅØdom(X_2)=$œâ„Å™„Çâ„Å∞„ÄÅdom(X)=$œâ„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-2     */   if( dom(X_2).isone() || dom(X_2).isw())     return kw;
+  /* 2-3.             dom(X_2)‚â†0       ,            $1      ,            $œâ„Å®„Åô„Çã„ÄÇ */
+  /* 2-3     */   if(!dom(X_2).iszero() && !dom(X_2).isone() && !dom(X_2).isw()){
+  /* 2-3-1.         „ÇÇ„Åó  dom(X_2)<X„Å™„Çâ„Å∞„ÄÅdom(X)=dom(X_2)„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-3-1   */     if(lt(dom(X_2),X))return       dom(X_2);
+  /* 2-3-2.         „Åù„ÅÜ„Åß„Å™„ÅÑ„Å™„Çâ„Å∞„ÄÅdom(X)=$œâ„Åß„ÅÇ„Çã„ÄÇ */
   /* 2-3-2   */     else              return kw;
   /*         */   }
   /*         */ }
-  /* 3.         Ç‡ÇµX=X_1+...+X_mÇñûÇΩÇ∑X_1,...,X_mÅ∏PT (2ÅÖm<Åá)Ç™ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA*/
+  /* 3.         „ÇÇ„ÅóX=X_1+...+X_m„ÇíÊ∫Ä„Åü„Åôm‚àà(N\{0,1})‚àß(X_1,...,X_m)‚ààPT^m„ÅåÂ≠òÂú®„Åô„Çã„Å™„Çâ„Å∞„ÄÅ*/
   /* 3       */ if(X.isadd()){
-  /*              dom(X)= dom(X_  m            )Ç≈Ç†ÇÈÅB */
+  /*              dom(X)= dom(X_  m            )„Åß„ÅÇ„Çã„ÄÇ */
                   return  dom(X.a[X.a.length-1]);
                 }
   throw new Error("You Died");
   return null;
 }
 
-/* äÓñ{óÒ */
-/* Ç±Ç±Ç≈ÇÕÅAäÓñ{óÒÇ∆Ç¢Ç§äTîOÇêÊÇ≈íËã`ÇµÇΩã§èIêîÇópÇ¢ÇƒíËã`Ç∑ÇÈÅB */
+/* Âü∫Êú¨Âàó */
+/* „Åì„Åì„Åß„ÅØ„ÄÅÂü∫Êú¨Âàó„Å®„ÅÑ„ÅÜÊ¶ÇÂøµ„ÇíÂÖà„ÅßÂÆöÁæ©„Åó„ÅüÂÖ±ÁµÇÊï∞„ÇíÁî®„ÅÑ„Å¶ÂÆöÁæ©„Åô„Çã„ÄÇ */
+/* „ÇÅ„Çì„Å©„Åè„Åï„ÅÑ„ÅÆ„Åß„Åè„Åæ3„ÅÆ„Çí2Â§âÊï∞„Å´Áõ¥„Åó„Å¶ÊµÅÁî®„Åó„Åæ„Åô„ÄÇÂÆöÁæ©„Å®„Åó„Å¶„ÅØ2Â§âÊï∞„ÅÆ„Å®„Åª„Å®„Çì„Å©Âêå„Åò„Å™„ÅÆ„Åß„ÄÇ */
 Kuma3ary.prototype.expand=function(Y){
-  if(!Y instanceof Kuma3ary) throw new Error("Y is not Kuma3ary object.");
+  if(!Y instanceof Kuma3ary) throw new Error("Y is not Wormbasedpsi object.");
   var dom = function(A){return A.dom();};
+  var eq = Kuma3ary.eq;
   var lt = Kuma3ary.lt;
   var k0 = Kuma3ary.k0;
+  var k1 = Kuma3ary.k1;
   var kw = Kuma3ary.kw;
   var X  = this;
-  var newk = function(X_1,X_2,X_3){return new Kuma3ary(",",[X_1,X_2,X_3]);};
-  /* 1.            Ç‡ÇµX=0Ç»ÇÁÇŒÅA    X[Y]=0Ç≈Ç†ÇÈÅB */
+  var newk = function(X_1,X_2){return new Kuma3ary(",",[X_1,X_2]);};
+  var seek = function(X,X_1,X_mb'){
+                       var m = X.a.length;
+                       var i;  var k = -1;
+                       for(i = 0; i < m-1; i++){
+                         if(eq(X.a[i].a[0],X_1) && eq(X.a[i].a[1],X_mb')){
+                           k = i;
+                         }
+                       }
+                       return k;
+                   };
+  var detG = function(X,k,j){
+                       var m = X.a.length;
+                       var X_m = X.a[m-1];
+                       if(j = 0 && K != -1){
+                         var X_k_t0__X__mm1 = X.slice(k+1,m-1);
+                         return X_k_t0__X__mm1.addright(X_m.expand(k1));
+                       }else if(j = 0){
+                         var X_0_t0__X__mm1 = X.slice(0,m-1);
+                         return X_k_t0__X__mm1.addright(X_m.expand(k1));
+                       }else{
+                         return new Kuma3ary("+",[detG(X,k,0),detG(X,k,j-1)]);
+                       }
+                   };
+  
+  var detg = function(X,k){
+                       if(K != -1){
+                         return X.slice(0,k);
+                       }else{
+                         return detG(X,k,0);
+                       }
+                   };
+  /* 1.            „ÇÇ„ÅóX=0„Å™„Çâ„Å∞„ÄÅ    X[Y]=0„Åß„ÅÇ„Çã„ÄÇ */
                     if(X.iszero()) return k0;
-  /* 2. Ç±Ç±Ç≈X=É’_{X_1}(X_2,X_3)ÇñûÇΩÇ∑X_1,X_2,X_3Å∏TÇ™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 2. „Åì„Åì„ÅßX=œà_{X_1}(X_2)„ÇíÊ∫Ä„Åü„Åô(X_1,X_2)‚ààT^2„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 2           */ else if(X.isPT  ()){
-  /*             */   var X_1 = X.a[0]; var X_2 = X.a[1]; var X_3 = X.a[2];
-  /* 2-1.             Ç±Ç±Ç≈dom(X_3)=0Ç∆Ç∑ÇÈÅB */
-  /* 2-1         */   if(   dom(X_3).iszero()){
-  /* 2-1-1.             Ç±Ç±Ç≈dom(X_2)=0Ç∆Ç∑ÇÈÅB */
-  /* 2-1-1       */     if(   dom(X_2).iszero()){
-  /* 2-1-1-1.             Ç‡Çµdom(X_1)=0Ç»ÇÁÇŒÅA X[Y]   =0Ç≈Ç†ÇÈÅB */
-  /* 2-1-1-1     */       if( dom(X_1).iszero()) return k0;
-  /* 2-1-1-2.             Ç‡Çµdom(X_1)=$1Ç»ÇÁÇŒÅAX[Y]  = YÇ≈Ç†ÇÈÅB */
-  /* 2-1-1-2     */       if( dom(X_1).isone ()) return  Y;
-  /* 2-1-1-3.             Ç‡Çµdom(X_1)ÅÇ0       ,          $1Ç»ÇÁÇŒÅA   X[Y]=É’_{X_1 [      Y]}(X_2,X_3)Ç≈Ç†ÇÈÅB */
-  /* 2-1-1-3     */       if(!dom(X_1).iszero()&&!dom(X_1).isone())  return newk(X_1.expand(Y), X_2,X_3);
-  /*             */     }
-  /* 2-1-2.             Ç‡Çµdom(X_2)=$1Ç»ÇÁÇŒÅAX[Y]  =YÇ≈Ç†ÇÈÅB */
-  /* 2-1-2       */     if(   dom(X_2).isone ()) return Y;
-  /* 2-1-3.             Ç±Ç±Ç≈dom(X_2)ÅÇ0       ,          $1Ç∆Ç∑ÇÈÅB */
-  /* 2-1-3       */     if(  !dom(X_2).iszero()&&!dom(X_2).isone()){
-  /* 2-1-3-1.             Ç‡Çµ  dom(X_2)<XÇ»ÇÁÇŒÅAX[Y]=É’_{X_1}(X_2[       Y],X_3)Ç≈Ç†ÇÈÅB */
-  /* 2-1-3-1     */       if(lt(dom(X_2),X))   return newk(X_1, X_2.expand(Y),X_3);
-  /* 2-1-3-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅAdom(X_2)=É’_{P}(Q,0) (P,QÅ∏T)Ç∆Ç®Ç≠ÅB */
-  /* 2-1-3-2     */       else{
-  /*             */         var P=dom(X_2).a[0]; 
-  /*             */         var Q=dom(X_2).a[1];
-  /* 2-1-3-2-1.             Ç±Ç±Ç≈Q=0Ç∆Ç∑ÇÈÅB */
-  /* 2-1-3-2-1   */         if(   Q.iszero()){
-  /* 2-1-3-2-1-1.             Ç‡ÇµY=$h (1ÅÖh<Åá)Ç©Ç¬ X[Y[0]]=É’_{X_1}(É°,X_3)Ç∆Ç»ÇÈÉ°Å∏TÇ™àÍà”Ç…ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA*/
-  /* 2-1-3-2-1-1 */           if(!Y.iszero() && Y.isfinite()){
-  /*             */             var Gamma=X.expand(Y.expand(k0)).a[1];
-  /* ?????                    X[Y]=É’_{X_1}(X_2[        É’_{P       [ 0]}(É°   ,  0)],X_3)Ç≈Ç†ÇÈÅB */
-  /*             */             return newk(X_1, X_2.expand(newk(P.expand(k0), Gamma, k0)),X_3);
-  /*             */           }
-  /* 2-1-3-2-1-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒ */
-  /*             */           else{
-  /*                            X[Y]=   É’_{X_1}(X_2[        É’_{P       [ 0]}(Q    ,  0)],X_3)Ç≈Ç†ÇÈÅB */
-  /*             */             return newk(X_1, X_2.expand(newk(P.expand(k0), Q,     k0)),X_3);
-  /*             */           }
-  /*             */         }
-  /* 2-1-3-2-2.             Ç±Ç±Ç≈QÅÇ0Ç∆Ç∑ÇÈÅB */
-  /* 2-1-3-2-2   */         if(  !Q.iszero()){
-  /* 2-1-3-2-2-1.             Ç‡ÇµY=$h (1ÅÖh<Åá)Ç©Ç¬*/ 
-  /* 2-1-3-2-2-1 */           if(!Y.iszero() && Y.isfinite()){
-  /*                            X[Y[0]]=É’_{X_1}(É°,X_3)Ç∆Ç»ÇÈÉ°Å∏TÇ™àÍà”Ç…ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA */
-  /*             */             var Gamma=X.expand(Y.expand(k0)).a[1];
-  /* ?????                 X[Y]=   É’_{X_1}(X_2       [ É’_{P}(Q[0],É°)],X_3)Ç≈Ç†ÇÈÅB */
-  /*             */             return newk(X_1, X_2.expand(newk(P.expand(k0), Q, Gamma)),X_3);
-  /*             */           }
-  /* 2-1-3-2-2-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅA */
-  /* 2-1-3-2-2-2 */           else{
-  /*                            X[Y]=   É’_{X_1}(X_2       [ É’_{P}(Q       [ 0], 0)],X_3)Ç≈Ç†ÇÈÅB*/
-  /*             */             return newk(X_1, X_2.expand(newk(P, Q.expand(k0),k0)),X_3);
-  /*             */           }
-  /*             */         }
-  /*             */       }
-  /*             */     }
+  /*             */   var X_1 = X.a[0]; var X_2 = X.a[1];
+  /* 2-1.             „Åì„Åì„Åßdom(X_2)=0„Å®„Åô„Çã„ÄÇ */
+  /* 2-1         */   if(   dom(X_2).iszero()){
+  /* 2-1-1.             „ÇÇ„Åódom(X_1)=0        ,  1„Å™„Çâ„Å∞„ÄÅ X[Y]     = Y„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-1-1       */     if( dom(X_1).iszero() || dom(X_1).isone ()) return Y;
+  /* 2-1-3.             „ÇÇ„Åódom(X_1)‚â†0       ,          $1„Å™„Çâ„Å∞„ÄÅ     X[Y]=œà_{X_1 [      Y]}(X_2)„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-1-3       */     if(!dom(X_1).iszero()&&!dom(X_1).isone())  return newk(X_1.expand(Y), X_2);
   /*             */   }
-  /* 2-2.             Ç±Ç±Ç≈dom(X_3)=$1Ç∆Ç∑ÇÈÅB */
-  /* 2-2         */   if(   dom(X_3).isone()){
-  /* 2-2-1.             Ç‡ÇµY=$1Ç»ÇÁÇŒÅAX[Y]=É’_{X_1}(X_2,X_3[0])Ç≈Ç†ÇÈÅB */
-  /* 2-2-1       */     if(Y.isone()) return newk(X_1,X_2,X_3.expand(k0));
+  /* 2-2.             „Åì„Åì„Åßdom(X_2)=$1„Å®„Åô„Çã„ÄÇ */
+  /* 2-2         */   if(   dom(X_2).isone()){
+  /* 2-2-1.             „ÇÇ„ÅóY=$1„Å™„Çâ„Å∞„ÄÅ  X[Y]=œà_{X_1}(X_2[0])„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-2-1       */     if(Y.isone()) return newk(X_1,X_2.expand(k0));
                         var k=Y.toint();
-  /* 2-2-2.             Ç‡ÇµY=$k (2ÅÖk<Åá)Ç»ÇÁÇŒÅA */
+  /* 2-2-2.             „ÇÇ„ÅóY=$k (2‚â¶k<‚àû)„Å™„Çâ„Å∞„ÄÅ */
   /* 2-2-2       */     if(2<=k && k!=-1)
-  /* ???               X[Y]=   É’_{X_1}(X_2,X_3[        0])+
-                              ...+É’_{X_1}(X_2,X_3[        0]) (É’_{X_1}(X_2,X_3[0])Ç™kå¬)Ç≈Ç†ÇÈÅB */
-                          return newk(X_1, X_2,X_3.expand(k0)).mul(k);
-  /* 2-2-3.             ÇªÇÃÇ¢Ç∏ÇÍÇ≈Ç‡Ç»Ç¢Ç»ÇÁÇŒÅAX[Y]=0Ç≈Ç†ÇÈÅB */
+  /* ???               X[Y]=   œà_{X_1}(X_2[        0])+
+                              ...+œà_{X_1}(X_2[        0]) (œà_{X_1}(X_2[0])„ÅåkÂÄã)„Åß„ÅÇ„Çã„ÄÇ */
+                          return newk(X_1, X_2.expand(k0)).mul(k);
+  /* 2-2-3.             „Åù„ÅÆ„ÅÑ„Åö„Çå„Åß„ÇÇ„Å™„ÅÑ„Å™„Çâ„Å∞„ÄÅX[Y]=0„Åß„ÅÇ„Çã„ÄÇ */
   /* 2-2-3       */     else                   return k0;
   /*             */   }
-  /* 2-3.             Ç‡Çµdom(X_3)=$É÷Ç»ÇÁÇŒÅAX[Y]=É’_{X_1}(X_2,X_3[Y])Ç≈Ç†ÇÈÅB */
-  /* 2-3         */   if( dom(X_3).eq(kw)) return newk(X_1,X_2,X_3.expand(Y));
-  /* 2-4.             Ç±Ç±Ç≈dom(X_3)ÅÇ0        ,           $1,                     $É÷Ç∆Ç∑ÇÈÅB */
-  /* 2-4         */   if(  !dom(X_3).iszero() && !dom(X_3).isone() && !dom(X_3).eq(kw)){
-  /* 2-4-1.             Ç‡Çµdom(X_3)<   XÇ»ÇÁÇŒÅAX[Y]=É’_{X_1}(X_2,X_3[       Y])Ç≈Ç†ÇÈÅB */
-  /* 2-4-1       */     if( dom(X_3).lt(X)) return   newk(X_1, X_2,X_3.expand(Y));
-  /* 2-4-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅAdom(X_3)=É’_{P}(Q,0) (P,QÅ∏T)Ç∆Ç®Ç≠ÅB */
+  /* 2-3.             „ÇÇ„Åódom(X_2)=$œâ„Å™„Çâ„Å∞„ÄÅ X[Y]=œà_{X_1}(X_2[Y])„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-3         */   if( dom(X_2).eq(kw)) return newk(X_1,X_2.expand(Y));
+  /* 2-4.             „Åì„Åì„Åßdom(X_2)‚â†0        ,           $1,                     $œâ„Å®„Åô„Çã„ÄÇ */
+  /* 2-4         */   if(  !dom(X_2).iszero() && !dom(X_2).isone() && !dom(X_2).eq(kw)){
+  /* 2-4-1.             „ÇÇ„Åódom(X_2)<   X„Å™„Çâ„Å∞„ÄÅX[Y]=œà_{X_1}(X_2[       Y])„Åß„ÅÇ„Çã„ÄÇ */
+  /* 2-4-1       */     if( dom(X_2).lt(X)) return   newk(X_1,X_2.expand(Y));
+  /* 2-4-2.             „Åù„ÅÜ„Åß„Å™„ÅÑ„Å™„Çâ„Å∞„ÄÅdom(X_2)=œà_{P}(0) (P‚ààT)„Å®„Åä„Åè„ÄÇ */
   /* 2-4-2       */     else{
-                          var P=dom(X_3).a[0];
-                          var Q=dom(X_3).a[1];
-                          var h=Y.toint();
-  /* 2-4-2-1.             Ç±Ç±Ç≈Q=0Ç∆Ç∑ÇÈÅB */
-  /* 2-4-2-1     */       if(Q.iszero()){
-  /* 2-4-2-1-1.             Ç‡ÇµY=$h (1ÅÖh<Åá)Ç©Ç¬*/
-  /* 2-4-2-1-1   */         if(1<=h && h!=-1){
-  /* ???             ?    X[Y[0]]=É’_{X_1}(X_2,É°)Ç∆Ç»ÇÈÉ°Å∏TÇ™àÍà”Ç…ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA */
-  /*             */           var Gamma=X.expand(Y.expand(k0)).a[2];
-  /*                             X[Y]=É’_{X_1}(X_2,X_3       [É’_{ P       [0 ]}(É°   , 0)])Ç≈Ç†ÇÈÅB */
-  /*             */           return newk(X_1, X_2,X_3.expand(newk(P.expand(k0), Gamma,k0)));
-  /* 2-4-2-1-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅA*/
-  /* 2-4-2-1-2   */         }else{
-  /*                          X[Y]=   É’_{X_1}(X_2,X_3       [É’_{ P       [0 ]}(Q     ,0)])Ç≈Ç†ÇÈÅB */
-  /*             */           return newk(X_1, X_2,X_3.expand(newk(P.expand(k0), Q    ,k0)));
-  /*             */         }
-  /* 2-4-2-2.             Ç±Ç±Ç≈QÅÇ0Ç∆Ç∑ÇÈÅB */
-  /*             */       }
-  /* 2-4-2-2     */       if(!Q.iszero()){
-  /*             */         var h=Y.toint();
-  /* 2-4-2-2-1.             Ç‡ÇµY=$h (1ÅÖh<Åá)Ç©Ç¬*/
-  /* 2-4-2-2-1   */         if( 1<=h && h!=-1){
-  /*                          X[Y[0]]=É’_{X_1}(X_2,É°)Ç∆Ç»ÇÈÉ°Å∏TÇ™àÍà”Ç…ë∂ç›Ç∑ÇÈÇ»ÇÁÇŒÅA */
-  /*             */           var Gamma=X.expand(Y.expand(k0)).a[2];
-  /* ???              ?   X[Y]=   É’_{X_1}(X_2,X_3       [ É’_{P}(Q       [ 0],É°    )])Ç≈Ç†ÇÈÅB */
-  /*             */           return newk(X_1, X_2,X_3.expand(newk(P, Q.expand(k0), Gamma)));
-  /* 2-4-2-2-2.             ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁÇŒÅA*/
-  /* 2-4-2-2-2   */         }else{
-  /*                          X[Y]=   É’_{X_1}(X_2,X_3[        É’_{P}(Q       [0 ],     0)])Ç≈Ç†ÇÈÅB */
-  /*             */           return newk(X_1, X_2,X_3.expand(newk(P, Q.expand(k0),    k0)));
-  /*             */         }
+                          var P=dom(X_2).a[0];
+  /*             */       var h=Y.toint();
+  /* 2-4-2-2-1.           „ÇÇ„ÅóY=$h (1‚â¶h<‚àû)„Åã„Å§*/
+  /* 2-4-2-2-1   */       if( 1<=h && h!=-1){
+  /*                        X[Y[0]]=œà_{X_1}(Œì)„Å®„Å™„ÇãŒì‚ààT„Åå‰∏ÄÊÑè„Å´Â≠òÂú®„Åô„Çã„Å™„Çâ„Å∞„ÄÅ */
+  /*             */         var Gamma=X.expand(Y.expand(k0)).a[1];
+  /* ???              ? X[Y]=        œà_{X_1}(X_2       [  œà_{P[0]}(       ,Œì    )])„Åß„ÅÇ„Çã„ÄÇ */
+  /*             */         return newk(X_1, X_2.expand(newk(P.expand(k0), Gamma)));
+  /* 2-4-2-2-2.           „Åù„ÅÜ„Åß„Å™„ÅÑ„Å™„Çâ„Å∞„ÄÅ*/
+  /* 2-4-2-2-2   */       }else{
+  /*                        X[Y]=   œà_{X_1}(X_2[        œà_{P[0]}(           0)])„Åß„ÅÇ„Çã„ÄÇ */
+  /*             */         return newk(X_1, X_2.expand(newk(P.expand(k0), k0)));
   /*             */       }
   /*             */     }
   /*             */   }
   /*             */ }
-  /* 3.             Ç±Ç±Ç≈X=X_1+...+X_mÇñûÇΩÇ∑X_1,...,X_mÅ∏PT (2ÅÖm<Åá)Ç™ë∂ç›Ç∑ÇÈÇ∆Ç∑ÇÈÅB */
+  /* 3.             „Åì„Åì„ÅßX=X_1+...+X_m„ÇíÊ∫Ä„Åü„Åôm‚àà(N\{0,1})‚àß(X_1,...,X_m)‚ààPT^m„ÅåÂ≠òÂú®„Åô„Çã„Å®„Åô„Çã„ÄÇ */
   /* 3           */ if(X.isadd()){
-  /*             */   var m=X.a.length;
-                      var X_m_Y          = X.a[m-1].expand(Y);
-                      var X_1_t0__X__mm1 = X.slice(0,m-1);
-  /* 3-1.             Ç‡ÇµX_m[Y]=0        Ç©Ç¬m= 2Ç»ÇÁÇŒÅAX[Y]=X_1Ç≈Ç†ÇÈÅB */
-  /* 3-1         */   if( X_m_Y .iszero() &&  m==2)     return X.a[0];
-  /* 3-2.             Ç‡ÇµX_m[Y]=0        Ç©Ç¬m> 2Ç»ÇÁÇŒÅAX[Y]=X_1+...+X_{m-1}Ç≈Ç†ÇÈÅB */
-  /* 3-2         */   if( X_m_Y .iszero() &&  m> 2)     return X_1_t0__X__mm1;
-  /* 3-3.             Ç‡ÇµX_m[Y]ÅÇ0Ç»ÇÁÇŒÅA               X[Y]=X_1+...+X_{m-1}  +        X_m[Y]Ç≈Ç†ÇÈÅB */
-  /* 3-3         */   if(!X_m_Y .iszero())              return X_1_t0__X__mm1  .addright(X_m_Y);
+  /*             */   var m = X.a.length;
+                      var X_m = X.a[m-1];
+                      if(dom(X_m.a[1]).isone()){
+                        var h=Y.toint();
+                        if(1<=h && h!=-1){
+                          var X_mb' = X_m.a[1].expand(k0);
+                          var k = seek(X,X_m.a[0],X_mb');
+                          var j = h;
+                          return new Kuma3ary("+",[detg(X,k),detG(X,k,j)]);
+                        }else{
+                          var X_1_t0__X__mm1 = X.slice(0,m-1);
+                          return X_1_t0__X__mm1.addright(X_m.expand(k1));
+                        }
+                      }else{
+                        var X_1_t0__X__mm1 = X.slice(0,m-1);
+                        var X_m_Y          = X_m.expand(Y);
+  /* 3-1.               „ÇÇ„ÅóX_m[Y]=0        „Åã„Å§m= 2„Å™„Çâ„Å∞„ÄÅX[Y]=X_1„Åß„ÅÇ„Çã„ÄÇ */
+  /* 3-1         */     if( X_m_Y .iszero() &&  m==2)     return X.a[0];
+  /* 3-2.               „ÇÇ„ÅóX_m[Y]=0        „Åã„Å§m> 2„Å™„Çâ„Å∞„ÄÅX[Y]=X_1+...+X_{m-1}„Åß„ÅÇ„Çã„ÄÇ */
+  /* 3-2         */     if( X_m_Y .iszero() &&  m> 2)     return X_1_t0__X__mm1;
+  /* 3-3.               „ÇÇ„ÅóX_m[Y]‚â†0„Å™„Çâ„Å∞„ÄÅ               X[Y]=X_1+...+X_{m-1}  +        X_m[Y]„Åß„ÅÇ„Çã„ÄÇ */
+  /* 3-3         */     if(!X_m_Y .iszero())              return X_1_t0__X__mm1  .addright(X_m_Y);
+                      }
                     }
 }
 
@@ -432,16 +405,16 @@ Kuma3ary.prototype.isstd=function(){
   var lt=Kuma3ary.eq;
   if(X.iszero())return true;
   else if(X.isPT()){
-    /* make S minimum (0,0,C) which S<X 
-       C=((((...(0,0,0),0,0),0,0)...),0,0) */
+    /* make S minimum (0,C) which S<X 
+       C=((((...(0,0),0),0)...),0) */
     var C=Kuma3ary.k0;
     var S;
     while(1){
-      S=new Kuma3ary(",",[0,0,C]);
+      S=new Kuma3ary(",",[0,C]);
       if(lt(X,S)){
         break;
       }
-      C=new Kuma3ary(",",[C,0,0]); //upgrade C
+      C=new Kuma3ary(",",[C,0]); //upgrade C
     }
     if(eq(S,X)) return true;
     
@@ -471,9 +444,3 @@ Kuma3ary.prototype.isstd=function(){
     return true;
   }
 }
-
-
-
-
-
-
